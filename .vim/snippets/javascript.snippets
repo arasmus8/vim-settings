@@ -1,0 +1,8 @@
+snippet test
+	test('${1:what feature is being tested?}', (assert) => {
+		const expected = ${2:what is the expected outcome?}
+		const actual = ${3:what is the actual result?}
+
+		assert.deepEqual(actual, expected, '${0:what should the feature do?}')
+		assert.end()
+	})

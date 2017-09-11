@@ -1,0 +1,22 @@
+extends html, javascript, css
+
+#Create a component stub
+snippet tem
+	<template>
+		<${1:BaseTag}>
+		</$1>
+	</template>
+	<script>
+		export default {
+			name: '${0}',
+			data() {
+				return {
+				}
+			}
+		}
+	</script>
+snippet sscope
+	<style ${1:scoped}>
+		${2:p} {
+		}
+	</style>
