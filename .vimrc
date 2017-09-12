@@ -142,6 +142,8 @@ filetype plugin indent on
 if has("autocmd")
   augroup global
 
+  autocmd BufRead,BufNewFile *.j,*.jass set filetype=jass sw=4 expandtab sts=4 ts=50
+
   " In text files, always limit the width of text to 78 characters
   autocmd BufRead *.txt set tw=78
 
@@ -167,5 +169,10 @@ let g:ale_linters={ 'html': ['htmlhint'], 'javascript': ['standard'], 'javascrip
 let g:ale_sign_column_always=1
 
 let g:airline_theme='murmur'
+
+let g:snipMate={}
+let g:snipMate.scope_aliases={}
+let g:snipMate.scope_aliases['vue'] = 'html,javascript'
+let g:snipMate.snippet_version = 1
 
 set autochdir
