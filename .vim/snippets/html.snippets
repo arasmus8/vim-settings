@@ -1,7 +1,7 @@
 #Create a component stub
 snippet poly
 	<!doctype html>
-	<link rel="import" href="../bower_components/polymer/polymer.html">
+	<link rel="import" href="../bower_components/polymer/polymer-element.html">
 	
 	<dom-module id="${1:tag-name}">
 		<template>
@@ -26,3 +26,7 @@ snippet poly
 			customElements.define($2.is, $2);
 		</script>
 	</dom-module>
+
+#html import
+snippet import
+	<link rel="import" href="$0">

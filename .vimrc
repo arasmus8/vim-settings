@@ -1,24 +1,15 @@
-set t_Co=256
-set nocompatible
 filetype plugin on
-"execute pathogen#infect()
 
-set bs=2		" allow backspacing over everything in insert mode
-set autoindent		" always set autoindenting on
-set viminfo='20,\"50	" read/write a .viminfo file, don't store more
-			" than 50 lines of registers
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-"set number
-"searching
+set backspace=start
+set autoindent
+set viminfo='20,\"50    " read/write a .viminfo file, don't store more
+                        " than 50 lines of registers
+set history=50          " keep 50 lines of command line history
 set showmatch
 set smartcase
-set ic
-
-set laststatus=2
+set ignorecase
 
 "indentation
-set ts=8
 set softtabstop=2
 set shiftwidth=2
 set expandtab
@@ -34,7 +25,9 @@ set mouse=a
 set nohlsearch
 set incsearch
 set nowrap
-syntax on
+if !exists('g:syntax_on')
+  syntax enable
+endif
 "set lines=50 columns=120
 
 let g:jsx_ext_required = 0
@@ -48,7 +41,7 @@ nnoremap <leader>ev :tabedit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Function to rename parameter under cursor
-function! Rename_Function_Parameter()
+function! Rename_Function_Parameter() abort
   execute 'normal! mc'
   let varname = expand("<cword>")
   execute 'normal! {ma}mb'
@@ -59,7 +52,7 @@ endfunction
 nnoremap <leader>rp :call Rename_Function_Parameter()<cr>
 
 " Function to refactor a key throughout a file
-function! Rename_Variable()
+function! Rename_Variable() abort
   execute 'normal! mc'
   let varname = expand("<cword>")
   let replacement = input("Refactor " . varname . " to: ")
@@ -69,7 +62,7 @@ endfunction
 nnoremap <leader>rv :call Rename_Variable()<cr>
 
 " Function to switch beween camel, kebob, and snake case
-function! Switch_Identifier_Case(ident, case)
+function! Switch_Identifier_Case(ident, case) abort
   let parts = []
   if a:ident =~ "_"
     echo "snake case"
@@ -97,11 +90,11 @@ function! Switch_Identifier_Case(ident, case)
   endif
   return result
 endfunction
-function! Change_Case(case)
+function! Change_Case(case) abort
   execute 'normal! mc'
   let varname = expand("<cword>")
   let replacement = Switch_Identifier_Case(varname, a:case)
-  execute 'normal! bcw' . replacement
+  execute 'normal! ciw' . replacement
   execute 'normal! `c'
 endfunction
 nnoremap <leader>cc :call Change_Case("camel")<cr>
@@ -109,11 +102,11 @@ nnoremap <leader>ck :call Change_Case("kebob")<cr>
 nnoremap <leader>cs :call Change_Case("snake")<cr>
 
 set pastetoggle=<C-P>
-nnoremap <PageUp> k_
-nnoremap <PageDown> j_
+nnoremap <PageUp> <C-W>k<C-W>_
+nnoremap <PageDown> <C-W>j<C-W>_
 " Home and End for v-split
-nnoremap [1~ <C-W>h<C-W>|
-nnoremap [4~ <C-W>l<C-W>|
+nnoremap <Home> <C-W>h<C-W>|
+nnoremap <End> <C-W>l<C-W>|
 nnoremap <Up> <C-Y>
 nnoremap <Down> <C-E>
 inoremap <Up> <C-X><C-Y>
@@ -121,20 +114,15 @@ inoremap <Down> <C-X><C-E>
 nnoremap <Left> 10zh
 nnoremap <Right> 10zl
 
-"inoremap <Tab> <C-R>=SuperCleverTab()<cr>
-
 let NERDTreeDirArrows=0
 let NERDTreeChDirMode=2
 let NERDTreeQuitOnOpen=1
 
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" Don't use Ex mode, use Q for formatting
-noremap Q gq
+nnoremap Q gq
 
 " Make p in Visual mode replace the selected text with the "" register.
-vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
+" This is messing with snippets
+" vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
 filetype plugin indent on
 
@@ -142,12 +130,8 @@ filetype plugin indent on
 if has("autocmd")
   augroup global
 
-  autocmd BufRead,BufNewFile *.j,*.jass set filetype=jass sw=4 expandtab sts=4 ts=50
-
   " In text files, always limit the width of text to 78 characters
   autocmd BufRead *.txt set tw=78
-
-  autocmd FileType c,cpp,esqlc  set formatoptions=croql comments=sr:/*,mb:*,el:*/,:// tabstop=8 shiftwidth=2 softtabstop=2 foldenable foldmethod=indent foldcolumn=3 foldlevel=100 number
 
   let g:user_emmet_install_global = 0
   let g:user_emmet_settings = {
@@ -162,13 +146,13 @@ endif " has("autocmd")
 
 call pathogen#infect()
 
-colorscheme tender
+colorscheme PaperColor
 
 let g:ale_linter_aliases={ 'vue': 'html' }
 let g:ale_linters={ 'html': ['htmlhint'], 'javascript': ['standard'], 'javascript.jsx': ['standard'] }
 let g:ale_sign_column_always=1
 
-let g:airline_theme='murmur'
+let g:airline_theme='papercolor'
 
 let g:snipMate={}
 let g:snipMate.scope_aliases={}

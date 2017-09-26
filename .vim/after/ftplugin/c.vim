@@ -1,0 +1,10 @@
+setlocal formatoptions=croql
+setlocal comments=sr:/*,mb:*,el:*/,://
+setlocal shiftwidth=2
+setlocal softtabstop=2
+setlocal expandtab
+setlocal foldenable
+setlocal foldmethod=indent
+setlocal foldcolumn=3
+setlocal foldlevel=100
+setlocal number
