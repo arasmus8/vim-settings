@@ -6,3 +6,7 @@ snippet test
 		assert.deepEqual(actual, expected, '${0:what should the feature do?}')
 		assert.end()
 	})
+snippet _get
+	_.get($1, '$2')
+snippet _getdef
+	_.get($1, '$2', $3)

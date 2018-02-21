@@ -21,7 +21,12 @@ set breakat+=#()
 set nobackup writebackup
 set makeef=errs##
 
-set mouse=a
+set mouse+=a
+if &term =~ '^screen'
+    " tmux knows the extended mouse mode
+    set ttymouse=xterm2
+endif
+set ttymouse=xterm2
 set nohlsearch
 set incsearch
 set nowrap
@@ -33,12 +38,13 @@ endif
 let g:jsx_ext_required = 0
 
 let mapleader=" "
-nnoremap <Leader>gf ma:1,$!gofmt<cr>'a
 nnoremap <leader><TAB> :tabnext<CR>
 nnoremap <leader><leader><TAB> :tabprevious<CR>
 nnoremap <leader>= mf{=}`f
 nnoremap <leader>ev :tabedit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>lt :ALEToggle<cr>
+"inoremap <C-@> <C-X><C-F>
 
 " Function to rename parameter under cursor
 function! Rename_Function_Parameter() abort
@@ -101,6 +107,14 @@ nnoremap <leader>cc :call Change_Case("camel")<cr>
 nnoremap <leader>ck :call Change_Case("kebob")<cr>
 nnoremap <leader>cs :call Change_Case("snake")<cr>
 
+function! Moustache_Tag_Contents() abort
+  execute 'normal! mc'
+  execute 'normal! "ddit'
+  execute 'normal! i{{d}}'
+  execute 'normal! `c'
+endfunction
+nnoremap <leader>m :call Moustache_Tag_Contents()<cr>
+
 set pastetoggle=<C-P>
 nnoremap <PageUp> <C-W>k<C-W>_
 nnoremap <PageDown> <C-W>j<C-W>_
@@ -151,6 +165,13 @@ colorscheme PaperColor
 let g:ale_linter_aliases={ 'vue': 'html' }
 let g:ale_linters={ 'html': ['htmlhint'], 'javascript': ['standard'], 'javascript.jsx': ['standard'] }
 let g:ale_sign_column_always=1
+let g:ale_fixers = {
+\   'javascript': [
+\       'standard',
+\       'remove_trailing_lines'
+\   ],
+\}
+
 
 let g:airline_theme='papercolor'
 

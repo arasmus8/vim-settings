@@ -4,11 +4,12 @@ extends html, javascript, css
 snippet tem
 	<template>
 		<${1:BaseTag}>
+			${0}
 		</$1>
 	</template>
 	<script>
 		export default {
-			name: '${0}',
+			name: '${2:ComponentName}',
 			data() {
 				return {
 				}
