@@ -14,6 +14,9 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 
+"abbreviations (like fixing common typos)
+iabbrev anem name
+
 set define=^\s*#\s*define
 set textwidth=100
 set linebreak
