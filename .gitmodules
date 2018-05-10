@@ -58,3 +58,6 @@
 [submodule ".vim/bundle/vim-html-template-literals"]
 	path = .vim/bundle/vim-html-template-literals
 	url = https://github.com/jonsmithers/vim-html-template-literals.git
+[submodule ".vim/bundle/html5.vim"]
+	path = .vim/bundle/html5.vim
+	url = https://github.com/othree/html5.vim.git
