@@ -48,6 +48,9 @@ nnoremap <leader>ev :tabedit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>lt :ALEToggle<cr>
 "inoremap <C-@> <C-X><C-F>
+nnoremap <leader>at vat<ESC>
+nnoremap <leader>dg ]c:diffget<CR>
+nnoremap <leader>dp ]c:diffput<CR>
 
 " Function to rename parameter under cursor
 function! Rename_Function_Parameter() abort
