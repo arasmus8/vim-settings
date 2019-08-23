@@ -9,6 +9,8 @@ set showmatch
 set smartcase
 set ignorecase
 
+set cryptmethod=blowfish2 "use stronger encryption method
+
 "indentation
 set softtabstop=2
 set shiftwidth=2
@@ -37,8 +39,6 @@ if !exists('g:syntax_on')
   syntax enable
 endif
 "set lines=50 columns=120
-
-let g:jsx_ext_required = 0
 
 let mapleader=" "
 nnoremap <leader><TAB> :tabnext<CR>
@@ -119,7 +119,64 @@ function! Moustache_Tag_Contents() abort
   execute 'normal! i{{d}}'
   execute 'normal! `c'
 endfunction
-nnoremap <leader>m :call Moustache_Tag_Contents()<cr>
+nnoremap <leader>mm :call Moustache_Tag_Contents()<cr>
+
+function! MarkdownToHtml(type, ...)
+  let sel_save = &selection
+  let &selection = "inclusive"
+  let reg_save = @@
+  let it_motion = 0
+
+  if a:0  " Invoked from Visual mode, use gv command.
+    silent exe "normal! gvy"
+  elseif a:type == 'line'
+    silent exe "normal! '[V']y"
+  else
+    silent exe "normal! `[v`]y"
+    " the 'it' motion includes the > from the starting tag, strip it off if present
+    if strpart(@@, 0, 1) == '>'
+      let it_motion = 1
+      let @@ = strpart(@@, 1)
+    endif
+  endif
+
+  let lines = map(split(@@, '\n', 1), {k, v -> trim(v)})
+
+  let tmp = tempname()
+
+  call writefile(lines, "/tmp/md_test.md")
+  call writefile(lines, tmp)
+
+  silent let html = system("pandoc -f markdown_github -t html5 " . tmp)
+
+  "call writefile(html, "/tmp/md_converted.html")
+
+  call delete(tmp)
+
+  let reg_save2 = @m
+  let @m = html
+  if a:0  " Invoked from Visual mode, use gv command.
+    silent exe 'normal! gvsm'
+    silent exe 'normal! gv='
+  elseif a:type == 'line'
+    silent exe "normal! '[V']sm"
+    silent exe "normal! '[V']="
+  else
+    if it_motion
+      silent exe 'normal! `[ v`]sm'
+      silent exe 'normal! `[ v`]='
+    else
+      silent exe 'normal! `[v`]sm'
+      silent exe 'normal! `[v`]='
+    endif
+  endif
+
+  let &selection = sel_save
+  let @@ = reg_save
+  let @m = reg_save2
+endfunction
+nnoremap <silent> <leader>md :set opfunc=MarkdownToHtml<CR>g@
+vnoremap <silent> <leader>md :<C-U>call MarkdownToHtml(visualmode(), 1)<CR>
 
 set pastetoggle=<C-P>
 nnoremap <PageUp> <C-W>k<C-W>_
@@ -144,7 +201,7 @@ nnoremap Q gq
 " This is messing with snippets
 " vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
-filetype plugin indent on
+" filetype plugin indent on
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
